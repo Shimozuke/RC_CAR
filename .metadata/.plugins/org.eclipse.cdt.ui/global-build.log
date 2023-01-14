@@ -1,0 +1,42 @@
+12:48:11 **** Incremental Build of configuration Debug for project samochodzik_RX ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xC -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "samochodzik_RX.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\xanox\OneDrive\Pulpit\RC_CAR\samochodzik_RX\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="samochodzik_RX.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: samochodzik_RX.elf
+ 
+arm-none-eabi-size   samochodzik_RX.elf 
+arm-none-eabi-objdump -h -S  samochodzik_RX.elf  > "samochodzik_RX.list"
+   text	   data	    bss	    dec	    hex	filename
+  15044	     20	   1804	  16868	   41e4	samochodzik_RX.elf
+Finished building: default.size.stdout
+ 
+Finished building: samochodzik_RX.list
+ 
+12:48:16 **** Incremental Build of configuration Debug for project samochodzik_RX ****
+make -j8 all 
+arm-none-eabi-size   samochodzik_RX.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15044	     20	   1804	  16868	   41e4	samochodzik_RX.elf
+Finished building: default.size.stdout
+ 
+13:06:31 **** Incremental Build of configuration Debug for project samochodzik_RX ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F401xC -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "samochodzik_RX.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\xanox\OneDrive\Pulpit\RC_CAR\samochodzik_RX\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="samochodzik_RX.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: samochodzik_RX.elf
+ 
+arm-none-eabi-size   samochodzik_RX.elf 
+arm-none-eabi-objdump -h -S  samochodzik_RX.elf  > "samochodzik_RX.list"
+   text	   data	    bss	    dec	    hex	filename
+  15044	     20	   1804	  16868	   41e4	samochodzik_RX.elf
+Finished building: default.size.stdout
+ 
+Finished building: samochodzik_RX.list
+ 
+13:09:06 **** Incremental Build of configuration Debug for project samochodzik_RX ****
+make -j8 all 
+arm-none-eabi-size   samochodzik_RX.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15044	     20	   1804	  16868	   41e4	samochodzik_RX.elf
+Finished building: default.size.stdout
+ 

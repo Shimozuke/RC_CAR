@@ -100,6 +100,22 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  //test
+
+//	  HAL_GPIO_WritePin(GPIOA, in1_Pin, SET);
+//	  HAL_GPIO_WritePin(GPIOA, in2_Pin, RESET);
+//
+//	  HAL_GPIO_WritePin(GPIOA, in3_Pin, SET);
+//	  HAL_GPIO_WritePin(GPIOA, in4_Pin, RESET);
+//
+//	  TIM2->CCR1 = 1000;
+//	  TIM3->CCR1 = 1000;
+//
+//	  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+//	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+
+	  //test
+
 	  if (rx_data[0] < 6 && last != rx_data[0])
 	  {
 		  TIM2->CCR1 = 0;
@@ -117,8 +133,7 @@ int main(void)
 
 		  last = rx_data[0];
 	  }
-
-	  if (rx_data[0] < 6 && last != rx_data[0])
+	  else if (rx_data[0] > 5 && last != rx_data[0])
 	  {
 		  TIM2->CCR1 = 0;
 		  TIM3->CCR1 = 0;
@@ -153,7 +168,7 @@ int main(void)
 	  }
 	  else if (rx_data[0] == 3)
 	  {
-		  TIM2->CCR1 = 500;
+		  TIM2->CCR1 = 750;
 		  TIM3->CCR1 = 1000;
 	  }
 	  else if (rx_data[0] == 4)
@@ -164,7 +179,7 @@ int main(void)
 	  else if (rx_data[0] == 5)
 	  {
 		  TIM2->CCR1 = 1000;
-		  TIM3->CCR1 = 500;
+		  TIM3->CCR1 = 750;
 	  }
 	  else if (rx_data[0] == 6)
 	  {
@@ -173,14 +188,17 @@ int main(void)
 	  }
 	  else if (rx_data[0] == 7)
 	  {
-		  TIM2->CCR1 = 1000;
-		  TIM3->CCR1 = 500;
+		  TIM2->CCR1 = 750;
+		  TIM3->CCR1 = 1000;
 	  }
 	  else if (rx_data[0] == 8)
 	  {
-		  TIM2->CCR1 = 500;
-		  TIM3->CCR1 = 1000;
+		  TIM2->CCR1 = 1000;
+		  TIM3->CCR1 = 750;
 	  }
+
+	  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 
 	  HAL_Delay(98);
     /* USER CODE END WHILE */
