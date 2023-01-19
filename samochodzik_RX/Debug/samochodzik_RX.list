@@ -815,13 +815,13 @@ int main(void)
  80007b2:	2b07      	cmp	r3, #7
  80007b4:	d109      	bne.n	80007ca <main+0x1be>
 	  {
-		  TIM2->CCR1 = 1000;
+		  TIM2->CCR1 = 750;
  80007b6:	f04f 4380 	mov.w	r3, #1073741824	; 0x40000000
- 80007ba:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
+ 80007ba:	f240 22ee 	movw	r2, #750	; 0x2ee
  80007be:	635a      	str	r2, [r3, #52]	; 0x34
-		  TIM3->CCR1 = 750;
+		  TIM3->CCR1 = 1000;
  80007c0:	4b0f      	ldr	r3, [pc, #60]	; (8000800 <main+0x1f4>)
- 80007c2:	f240 22ee 	movw	r2, #750	; 0x2ee
+ 80007c2:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
  80007c6:	635a      	str	r2, [r3, #52]	; 0x34
  80007c8:	e00c      	b.n	80007e4 <main+0x1d8>
 	  }
@@ -831,13 +831,13 @@ int main(void)
  80007ce:	2b08      	cmp	r3, #8
  80007d0:	d108      	bne.n	80007e4 <main+0x1d8>
 	  {
-		  TIM2->CCR1 = 750;
+		  TIM2->CCR1 = 1000;
  80007d2:	f04f 4380 	mov.w	r3, #1073741824	; 0x40000000
- 80007d6:	f240 22ee 	movw	r2, #750	; 0x2ee
+ 80007d6:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
  80007da:	635a      	str	r2, [r3, #52]	; 0x34
-		  TIM3->CCR1 = 1000;
+		  TIM3->CCR1 = 750;
  80007dc:	4b08      	ldr	r3, [pc, #32]	; (8000800 <main+0x1f4>)
- 80007de:	f44f 727a 	mov.w	r2, #1000	; 0x3e8
+ 80007de:	f240 22ee 	movw	r2, #750	; 0x2ee
  80007e2:	635a      	str	r2, [r3, #52]	; 0x34
 	  }
 

@@ -121,7 +121,7 @@ int main(void)
 		  TIM2->CCR1 = 0;
 		  TIM3->CCR1 = 0;
 
-		  HAL_Delay(2);
+		  HAL_Delay(1);
 
 		  HAL_GPIO_WritePin(GPIOA, in1_Pin, SET);
 		  HAL_GPIO_WritePin(GPIOA, in2_Pin, RESET);
