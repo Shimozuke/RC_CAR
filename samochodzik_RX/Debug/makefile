@@ -60,8 +60,8 @@ all: main-build
 main-build: samochodzik_RX.elf secondary-outputs
 
 # Tool invocations
-samochodzik_RX.elf samochodzik_RX.map: $(OBJS) $(USER_OBJS) C:\Users\xanox\OneDrive\Pulpit\RC_CAR\samochodzik_RX\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "samochodzik_RX.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\xanox\OneDrive\Pulpit\RC_CAR\samochodzik_RX\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="samochodzik_RX.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+samochodzik_RX.elf samochodzik_RX.map: $(OBJS) $(USER_OBJS) C:\Users\xanox\OneDrive\Pulpit\samochodzik_na_sterowanie\samochodzik_RX\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "samochodzik_RX.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\xanox\OneDrive\Pulpit\samochodzik_na_sterowanie\samochodzik_RX\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="samochodzik_RX.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

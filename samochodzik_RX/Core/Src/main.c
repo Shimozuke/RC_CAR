@@ -51,13 +51,19 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+void TuneEngine();
+void StepBack();
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t rx_data[NRF24L01P_PAYLOAD_LENGTH] = {0};
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+uint8_t rx_data[NRF24L01P_PAYLOAD_LENGTH] = {0};
+uint8_t wallFlag = 0;
+int lastComm = 0;
+
 /* USER CODE END 0 */
 
 /**
@@ -90,117 +96,20 @@ int main(void)
   MX_SPI2_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
+
+  HAL_TIM_Base_Start_IT(&htim5);
+
   nrf24l01p_rx_init(2500, _1Mbps);
 
-  int last = 0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  //test
 
-//	  HAL_GPIO_WritePin(GPIOA, in1_Pin, SET);
-//	  HAL_GPIO_WritePin(GPIOA, in2_Pin, RESET);
-//
-//	  HAL_GPIO_WritePin(GPIOA, in3_Pin, SET);
-//	  HAL_GPIO_WritePin(GPIOA, in4_Pin, RESET);
-//
-//	  TIM2->CCR1 = 1000;
-//	  TIM3->CCR1 = 1000;
-//
-//	  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-//	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-
-	  //test
-
-	  if (rx_data[0] < 6 && last != rx_data[0])
-	  {
-		  TIM2->CCR1 = 0;
-		  TIM3->CCR1 = 0;
-
-		  HAL_Delay(1);
-
-		  HAL_GPIO_WritePin(GPIOA, in1_Pin, SET);
-		  HAL_GPIO_WritePin(GPIOA, in2_Pin, RESET);
-
-		  HAL_GPIO_WritePin(GPIOA, in3_Pin, SET);
-		  HAL_GPIO_WritePin(GPIOA, in4_Pin, RESET);
-
-		  HAL_Delay(1);
-
-		  last = rx_data[0];
-	  }
-	  else if (rx_data[0] > 5 && last != rx_data[0])
-	  {
-		  TIM2->CCR1 = 0;
-		  TIM3->CCR1 = 0;
-
-		  HAL_Delay(1);
-
-		  HAL_GPIO_WritePin(GPIOA, in2_Pin, SET);
-		  HAL_GPIO_WritePin(GPIOA, in1_Pin, RESET);
-
-		  HAL_GPIO_WritePin(GPIOA, in4_Pin, SET);
-		  HAL_GPIO_WritePin(GPIOA, in3_Pin, RESET);
-
-		  HAL_Delay(1);
-
-		  last = rx_data[0];
-	  }
-
-	  if (rx_data[0] == 0)
-	  {
-		  TIM2->CCR1 = 0;
-		  TIM3->CCR1 = 0;
-	  }
-	  else if (rx_data[0] == 1)
-	  {
-		  TIM2->CCR1 = 1000;
-		  TIM3->CCR1 = 1000;
-	  }
-	  else if (rx_data[0] == 2)
-	  {
-		  TIM2->CCR1 = 0;
-		  TIM3->CCR1 = 1000;
-	  }
-	  else if (rx_data[0] == 3)
-	  {
-		  TIM2->CCR1 = 750;
-		  TIM3->CCR1 = 1000;
-	  }
-	  else if (rx_data[0] == 4)
-	  {
-		  TIM2->CCR1 = 1000;
-	  	  TIM3->CCR1 = 0;
-	  }
-	  else if (rx_data[0] == 5)
-	  {
-		  TIM2->CCR1 = 1000;
-		  TIM3->CCR1 = 750;
-	  }
-	  else if (rx_data[0] == 6)
-	  {
-		  TIM2->CCR1 = 1000;
-		  TIM3->CCR1 = 1000;
-	  }
-	  else if (rx_data[0] == 7)
-	  {
-		  TIM2->CCR1 = 750;
-		  TIM3->CCR1 = 1000;
-	  }
-	  else if (rx_data[0] == 8)
-	  {
-		  TIM2->CCR1 = 1000;
-		  TIM3->CCR1 = 750;
-	  }
-
-	  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-	  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-
-	  HAL_Delay(98);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -254,6 +163,110 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == NRF24L01P_IRQ_PIN_NUMBER)
 		nrf24l01p_rx_receive(rx_data); // read data when data ready flag is set
+}
+
+void TuneEngine()
+{
+	if (rx_data[0] < 6 && lastComm != rx_data[0] && ! wallFlag)
+	{
+		TIM2->CCR1 = 0;
+		TIM3->CCR1 = 0;
+
+		HAL_GPIO_WritePin(GPIOB, in1_Pin, SET);
+		HAL_GPIO_WritePin(GPIOB, in2_Pin, RESET);
+
+		HAL_GPIO_WritePin(GPIOB, in3_Pin, SET);
+		HAL_GPIO_WritePin(GPIOB, in4_Pin, RESET);
+
+		lastComm = rx_data[0];
+	}
+
+	else if ((rx_data[0] > 5 && lastComm != rx_data[0]) || wallFlag)
+	{
+		TIM2->CCR1 = 0;
+		TIM3->CCR1 = 0;
+
+		HAL_GPIO_WritePin(GPIOB, in2_Pin, SET);
+		HAL_GPIO_WritePin(GPIOB, in1_Pin, RESET);
+
+		HAL_GPIO_WritePin(GPIOB, in4_Pin, SET);
+		HAL_GPIO_WritePin(GPIOB, in3_Pin, RESET);
+
+		lastComm = rx_data[0];
+		if (wallFlag)
+		{
+			lastComm = 0;
+		}
+	}
+
+	if (rx_data[0] == 0 && ! wallFlag)
+	{
+		TIM2->CCR1 = 0;
+		TIM3->CCR1 = 0;
+	}
+	else if (rx_data[0] == 1 || wallFlag)
+	{
+		TIM2->CCR1 = 1000;
+		TIM3->CCR1 = 1000;
+	}
+	else if (rx_data[0] == 2)
+	{
+		TIM2->CCR1 = 1000;
+		TIM3->CCR1 = 0;
+	}
+	else if (rx_data[0] == 3)
+	{
+		TIM2->CCR1 = 1000;
+		TIM3->CCR1 = 750;
+	}
+	else if (rx_data[0] == 4)
+	{
+		TIM2->CCR1 = 0;
+		TIM3->CCR1 = 1000;
+	}
+	else if (rx_data[0] == 5)
+	{
+		TIM2->CCR1 = 750;
+		TIM3->CCR1 = 1000;
+	}
+	else if (rx_data[0] == 6)
+	{
+		TIM2->CCR1 = 1000;
+		TIM3->CCR1 = 1000;
+	}
+	else if (rx_data[0] == 7)
+	{
+		TIM2->CCR1 = 1000;
+		TIM3->CCR1 = 750;
+	}
+	else if (rx_data[0] == 8)
+	{
+		TIM2->CCR1 = 750;
+		TIM3->CCR1 = 1000;
+	}
+
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+}
+
+void StepBack()
+{
+	lastComm = 0;
+
+	TIM2->CCR1 = 0;
+	TIM3->CCR1 = 0;
+
+	HAL_GPIO_WritePin(GPIOB, in2_Pin, SET);
+	HAL_GPIO_WritePin(GPIOB, in1_Pin, RESET);
+
+	HAL_GPIO_WritePin(GPIOB, in4_Pin, SET);
+	HAL_GPIO_WritePin(GPIOB, in3_Pin, RESET);
+
+	TIM2->CCR1 = 1000;
+	TIM3->CCR1 = 1000;
+
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 }
 /* USER CODE END 4 */
 

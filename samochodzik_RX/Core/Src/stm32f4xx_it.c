@@ -46,7 +46,8 @@
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-
+extern void TuneEngine();
+extern void StepBack();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -55,9 +56,9 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern TIM_HandleTypeDef htim5;
 /* USER CODE BEGIN EV */
-
+extern uint8_t wallFlag;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -210,6 +211,42 @@ void EXTI9_5_IRQHandler(void)
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */
 
   /* USER CODE END EXTI9_5_IRQn 1 */
+}
+
+/**
+  * @brief This function handles EXTI line[15:10] interrupts.
+  */
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+	if (HAL_GPIO_ReadPin(WallDet_GPIO_Port, WallDet_Pin))
+		  {
+			  wallFlag = 0;
+		  }
+		  else
+		  {
+			  wallFlag = 1;
+			  StepBack();
+		  }
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(WallDet_Pin);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+
+  /* USER CODE END EXTI15_10_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM5 global interrupt.
+  */
+void TIM5_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM5_IRQn 0 */
+	TuneEngine();
+  /* USER CODE END TIM5_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim5);
+  /* USER CODE BEGIN TIM5_IRQn 1 */
+
+  /* USER CODE END TIM5_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

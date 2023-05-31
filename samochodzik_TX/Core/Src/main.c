@@ -53,14 +53,17 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+void CodeCommand();
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 uint8_t tx_data[NRF24L01P_PAYLOAD_LENGTH] = {0};
 uint32_t jStick[2] = {50000, 50000};
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 /* USER CODE END 0 */
 
 /**
@@ -95,11 +98,13 @@ int main(void)
   MX_SPI2_Init();
   MX_ADC1_Init();
   MX_TIM1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   nrf24l01p_tx_init(2500, _1Mbps);
 
   HAL_ADC_Start_DMA(&hadc1, jStick, (uint32_t) 2);
   HAL_TIM_OC_Start(&htim1, TIM_CHANNEL_2);
+  HAL_TIM_Base_Start_IT(&htim2);
 
   /* USER CODE END 2 */
 
@@ -107,84 +112,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if (jStick[0] > 1250 && jStick[1] > 1250 && jStick[0] < 2750 && jStick[1] < 2750)
-	  {
-		  tx_data[0] = 0;
-	  }
-	  else if (jStick[1] < 1250 && jStick[0] > 1250 && jStick[0] < 2750)
-	  {
-		  tx_data[0] = 1;
-	  }
-	  else if (jStick[0] > 2750 && jStick[1] > 1250 && jStick[1] < 2750)
-	  {
-		  tx_data[0] = 2;
-	  }
-	  else if (jStick[0] < 1250 && jStick[1] > 1250 && jStick[1] < 2750)
-	  {
-		  tx_data[0] = 4;
-	  }
-	  else if (jStick[1] > 2750 && jStick[0] > 1250 && jStick[0] < 2750)
-	  {
-		  tx_data[0] = 6;
-	  }
-	  else if (jStick[0] > 2750 && jStick[1] < 1250)
-	  {
-		  tx_data[0] = 3;
-	  }
-	  else if (jStick[0] < 1250 && jStick[1] < 1250)
-	  {
-		  tx_data[0] = 5;
-	  }
-	  else if (jStick[0] > 2750 && jStick[1] > 2750)
-	  {
-		  tx_data[0] = 7;
-	  }
-	  else if (jStick[0] < 1250 && jStick[1] > 2750)
-	  {
-		  tx_data[0] = 8;
-	  }
-	  else
-	  {
-		  tx_data[0] = 0;
-	  }
 
-//	  HAL_GPIO_WritePin(GPIOB, lin1_Pin, SET);
-//
-//	  if(HAL_GPIO_ReadPin(GPIOA, kol2_Pin) == 1)
-//		  tx_data[0] = 1;
-//
-//	  HAL_GPIO_WritePin(GPIOB, lin1_Pin, RESET);
-//	  HAL_GPIO_WritePin(GPIOB, lin2_Pin, SET);
-//
-//	  if (HAL_GPIO_ReadPin(GPIOA, kol3_Pin) == 1)
-//	  {
-//		  if(tx_data[0] == 0)
-//			  tx_data[0] = 2;
-//		  else if (tx_data[0] == 1)
-//			  tx_data[0] = 3;
-//	  }
-//	  if (HAL_GPIO_ReadPin(GPIOA, kol1_Pin) == 1)
-//	  {
-//		  if(tx_data[0] == 0)
-//			  tx_data[0] = 4;
-//		  else if(tx_data[0] == 1)
-//			  tx_data[0] = 5;
-//	  }
-//	  if (HAL_GPIO_ReadPin(GPIOA, kol2_Pin) == 1)
-//	  {
-//		  if (tx_data[0] == 2)
-//			  tx_data[0] = 7;
-//		  else if (tx_data[0] == 4)
-//			  tx_data[0] = 8;
-//		  else if(tx_data[0] == 0)
-//			  tx_data[0] = 6;
-//	  }
-//
-//	  HAL_GPIO_WritePin(GPIOB, lin2_Pin, RESET);
-
-
-	  nrf24l01p_tx_transmit(tx_data);
-	  HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -238,6 +166,50 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == NRF24L01P_IRQ_PIN_NUMBER)
 		nrf24l01p_tx_irq(); // clear interrupt flag
+}
+
+void CodeCommand()
+{
+	if (jStick[0] > 1250 && jStick[1] > 1250 && jStick[0] < 2750 && jStick[1] < 2750)
+	{
+		tx_data[0] = 0;
+	}
+	else if (jStick[1] < 1250 && jStick[0] > 1250 && jStick[0] < 2750)
+	{
+		tx_data[0] = 1;
+	}
+	else if (jStick[0] > 2750 && jStick[1] > 1250 && jStick[1] < 2750)
+	{
+		tx_data[0] = 2;
+	}
+	else if (jStick[0] < 1250 && jStick[1] > 1250 && jStick[1] < 2750)
+	{
+		tx_data[0] = 4;
+	}
+	else if (jStick[1] > 2750 && jStick[0] > 1250 && jStick[0] < 2750)
+	{
+		tx_data[0] = 6;
+	}
+	else if (jStick[0] > 2750 && jStick[1] < 1250)
+	{
+		tx_data[0] = 3;
+	}
+	else if (jStick[0] < 1250 && jStick[1] < 1250)
+	{
+		tx_data[0] = 5;
+	}
+	else if (jStick[0] > 2750 && jStick[1] > 2750)
+	{
+		tx_data[0] = 7;
+	}
+	else if (jStick[0] < 1250 && jStick[1] > 2750)
+	{
+		tx_data[0] = 8;
+	}
+	else
+	{
+		tx_data[0] = 0;
+	}
 }
 /* USER CODE END 4 */
 

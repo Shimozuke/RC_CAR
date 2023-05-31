@@ -1,4 +1,6 @@
-../Core/Src/main.c:67:5:main	16	static
-../Core/Src/main.c:215:6:SystemClock_Config	88	static
-../Core/Src/main.c:253:6:HAL_GPIO_EXTI_Callback	16	static
-../Core/Src/main.c:264:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:73:5:main	8	static
+../Core/Src/main.c:124:6:SystemClock_Config	88	static
+../Core/Src/main.c:162:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/main.c:168:6:TuneEngine	8	static
+../Core/Src/main.c:252:6:StepBack	8	static
+../Core/Src/main.c:277:6:Error_Handler	4	static,ignoring_inline_asm

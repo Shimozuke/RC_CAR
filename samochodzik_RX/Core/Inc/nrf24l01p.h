@@ -19,8 +19,8 @@
 /* User Configurations */
 #define NRF24L01P_SPI                     (&hspi2)
 
-#define NRF24L01P_SPI_CS_PIN_PORT         GPIOB 
-#define NRF24L01P_SPI_CS_PIN_NUMBER       GPIO_PIN_13
+#define NRF24L01P_SPI_CS_PIN_PORT         GPIOA
+#define NRF24L01P_SPI_CS_PIN_NUMBER       GPIO_PIN_9
 
 #define NRF24L01P_CE_PIN_PORT             GPIOB
 #define NRF24L01P_CE_PIN_NUMBER           GPIO_PIN_12
